@@ -32,6 +32,13 @@ def create_city(city: City):
   db.append(city.dict())
   return db[-1]
 
+@app.put('/cities/{city_id}')
+async def update_city(city_id: int, city: City):
+  update_city = db.append(city)  
+  r = requests.get(f'http://worldtimeapi.org/api/timezone/{city["timezone"]}')
+  current_time = r.json()['datetime']
+  return {'name': city['name'], 'timezone': city['timezone'], 'current_time': current_time}
+
 @app.delete('/cities/{city_id}')
 def delete_city(city_id: int):
   db.pop(city_id-1)
